@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+    <!-- Course: CS31A0830 Geographic Information Systems -->
+    <!-- Maker: Petri Rämö -->
+    <!-- Date: 07.02.2022 -->
+    
+   
+   <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin="">
+        </script>
+        <script src="index.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      
+   </head>
+   
+   <body>
+
+        <div id="map" style="width: 600px; height: 400px;"></div>
+
+
+        <script>
+
+            //Getting the map from OSM
+        
+            var map = L.map('map').setView([60.317222, 24.963333], 13);
+
+            var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoicGV0dWtrYSIsImEiOiJja3lvYnI4ZWwzNGJoMm5xcGV1NDNjb2l0In0.Vdcvs1G18mKyubzqTtfK7A'
+            }).addTo(map);
+
+
+            //Making all the lines 
+            makeLine([[60.317222, 24.963333], [60.171944, 24.941389]]);
+            makeLine([[60.171944, 24.941389], [66.498056, 25.705278]]);
+            makeLine([[66.49828141809792, 25.704827784761726], [68.073611, 29.315278]]);
+            makeLine([[68.073611, 29.315278], [66.543333, 25.8475]]);
+
+            //Making all the polygons
+            makePolygon([[60.31210810549407, 24.892977079635347], [60.33890970329873, 24.952333324509286], [60.307178062612046, 24.993967663960735]], "Helsinki-Vantaa Airport");
+            makePolygon([[60.172780078144626, 24.939114999148018], [60.17075219325576, 24.939554881390734], [60.170816233640075, 24.94255895524342], [60.17286012366417, 24.94220490368221]], "Helsinki Railway Station");
+            makePolygon([[66.49836797374859, 25.70448510004062], [66.49822678636104, 25.7044207270295], [66.49814977472151, 25.706094425318856], [66.49829951935756, 25.706158798329977]], "Rovaniemi Railway Station/Car Rental");
+            makePolygon([[68.07559367867881, 29.310532039800332], [68.0726130483384, 29.311819500022906], [68.07318997459727, 29.323234980663127], [68.07540139157159, 29.32186168975904]], "Korvatunturi");
+            makePolygon([[66.54333701284122, 25.83921217793225], [66.54237203896578, 25.84025840011785], [66.543692520091, 25.853348936245], [66.5450840281467, 25.85204753791657]], "Santa Claus Village");
+            
+            //Finding restaurants and hotels near the places
+            getData("https://nominatim.openstreetmap.org/search?street=Lentoasemantie+1&city=Vantaa&format=geojson&limit=10&amenity=restaurants");
+            getData("https://nominatim.openstreetmap.org/search?street=Lentoasemantie+1&city=Vantaa&format=geojson&limit=10&amenity=hotels");
+
+            getData("https://nominatim.openstreetmap.org/search?street=Elielinaukio+5&city=Helsinki&format=geojson&limit=10&amenity=restaurants");
+            getData("https://nominatim.openstreetmap.org/search?street=Elielinaukio+5&city=Helsinki&format=geojson&limit=10&amenity=hotels");
+
+            getData("https://nominatim.openstreetmap.org/search?street=Ratakatu+3&city=Rovaniemi&format=geojson&limit=10&amenity=restaurants");
+            getData("https://nominatim.openstreetmap.org/search?street=Ratakatu+3&city=Rovaniemi&format=geojson&limit=10&amenity=hotels");
+
+            getData("https://nominatim.openstreetmap.org/search?street=Tähtikuja&city=Rovaniemi&format=geojson&limit=10&amenity=restaurants");
+            getData("https://nominatim.openstreetmap.org/search?street=Tähtikuja&city=Rovaniemi&format=geojson&limit=10&amenity=hotels");
+
+        </script>
+
+   </body>
+   
+</html>
